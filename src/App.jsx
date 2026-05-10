@@ -35,7 +35,6 @@ function App() {
       <ScrollReveal><PhotoReel /></ScrollReveal>
       <ScrollReveal><Itinerary /></ScrollReveal>
       <ScrollReveal><LeadCapture /></ScrollReveal>
-      <ScrollReveal><SocialProof /></ScrollReveal>
       <ScrollReveal><CommunityBanner /></ScrollReveal>
       <Footer />
       <WhatsAppButton />
