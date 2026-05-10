@@ -771,10 +771,9 @@
 }
 
 .reel-track {
+  width: max-content;
   display: flex;
   gap: 2rem;
-  width: max-content;
-  animation: marquee 40s linear infinite;
   transform-style: preserve-3d;
   transform: rotateX(5deg) rotateY(-5deg) rotateZ(2deg); /* The 3D tilt */
   padding: 2rem 0;
