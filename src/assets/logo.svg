@@ -1,0 +1,21 @@
+<svg width="300" height="150" viewBox="0 0 300 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Three Wolf Heads Silhouette (Abstracted for clean SVG) -->
+  <g id="wolf-mascot">
+    <!-- Third Wolf (Back) -->
+    <path d="M220 30L240 45L260 40L250 60L270 75L240 85L210 70L200 40L220 30Z" fill="#1B4332" opacity="0.6"/>
+    <!-- Second Wolf (Middle) -->
+    <path d="M180 20L205 35L230 30L220 55L245 75L210 85L170 70L160 35L180 20Z" fill="#2D6A4F" opacity="0.8"/>
+    <!-- First Wolf (Front) -->
+    <path d="M140 10L170 30L200 25L190 60L220 85L180 100L130 80L120 40L140 10Z" fill="#1B4332"/>
+    
+    <!-- Detail highlights for front wolf -->
+    <path d="M140 10L155 25L170 30L160 20L140 10Z" fill="white" opacity="0.3"/>
+    <path d="M180 100L190 90L220 85L200 95L180 100Z" fill="white" opacity="0.2"/>
+  </g>
+
+  <!-- Brand Typography -->
+  <g id="brand-text">
+    <text x="150" y="115" text-anchor="middle" font-family="Outfit, sans-serif" font-weight="600" font-size="12" letter-spacing="2" fill="#2D6A4F">THE</text>
+    <text x="150" y="135" text-anchor="middle" font-family="Outfit, sans-serif" font-weight="800" font-size="24" letter-spacing="3" fill="#1B4332">WANDERING WOLF</text>
+  </g>
+</svg>

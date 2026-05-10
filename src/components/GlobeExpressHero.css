@@ -1,0 +1,883 @@
+/* ============================================================
+   GLOBE EXPRESS HERO BANNER — V3.0
+   Scoped CSS — no interference with existing app styles
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --ge-accent: #E8A020;
+  --ge-accent-dark: #C4841A;
+  --ge-white: #FFFFFF;
+  --ge-black: #0A0A0A;
+  --ge-card-radius: 18px;
+  --ge-transition-slow: 0.85s cubic-bezier(0.77, 0, 0.175, 1);
+  --ge-transition-med: 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+  --ge-transition-fast: 0.35s ease;
+}
+
+/* ════════════════════════════════════════════
+   BASE WRAPPER
+════════════════════════════════════════════ */
+.ge-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 620px;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+/* Mode transition fade-out */
+.ge-mode-transitioning {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* ════════════════════════════════════════════
+   BACKGROUND LAYERS
+════════════════════════════════════════════ */
+.ge-bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity var(--ge-transition-slow);
+  transform: scale(1.05);
+  will-change: opacity, transform;
+}
+
+.ge-bg-layer.ge-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity var(--ge-transition-slow), transform 8s ease;
+}
+
+/* Overlay — Mode A */
+.ge-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(0,0,0,0.72) 0%,
+    rgba(0,0,0,0.45) 45%,
+    rgba(0,0,0,0.15) 100%
+  );
+  z-index: 1;
+  transition: background 0.5s ease;
+}
+
+/* Overlay — Mode B (stronger bottom fade for filmstrip) */
+.ge-overlay--b {
+  background:
+    linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.0) 55%),
+    linear-gradient(to right, rgba(0,0,0,0.65) 0%, transparent 60%);
+}
+
+/* ════════════════════════════════════════════
+   MODE A — LAYOUT (grid: left content | right cards)
+════════════════════════════════════════════ */
+.ge-layout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  padding: 0 5vw;
+  align-items: center;
+  gap: 0 3vw;
+}
+
+/* ── Left Content ── */
+.ge-content {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 80px;
+  max-width: 620px;
+}
+
+/* Location label */
+.ge-location-wrap {
+  overflow: hidden;
+  height: 30px;
+  margin-bottom: 12px;
+}
+
+.ge-location {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ge-white);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s;
+}
+.ge-location.ge-text-in  { opacity: 1; transform: translateY(0); }
+.ge-location.ge-text-out { opacity: 0; transform: translateY(-30px); transition: opacity 0.3s ease, transform 0.3s ease; }
+
+/* Massive title */
+.ge-title-wrap { overflow: hidden; margin-bottom: 20px; }
+
+.ge-title {
+  font-size: clamp(40px, 6.5vw, 96px);
+  font-weight: 900;
+  color: var(--ge-white);
+  line-height: 1.0;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  transform: translateX(80px);
+  opacity: 0;
+  transition: transform var(--ge-transition-med) 0.05s, opacity var(--ge-transition-med) 0.05s;
+  will-change: transform, opacity;
+}
+.ge-title.ge-text-in         { transform: translateX(0); opacity: 1; }
+.ge-title.ge-text-out-left   { transform: translateX(-100px); opacity: 0; transition: transform var(--ge-transition-fast), opacity var(--ge-transition-fast); }
+.ge-title.ge-text-out-right  { transform: translateX(100px);  opacity: 0; transition: transform var(--ge-transition-fast), opacity var(--ge-transition-fast); }
+
+/* Sub-text */
+.ge-sub-wrap { overflow: hidden; margin-bottom: 36px; }
+.ge-sub {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.75;
+  max-width: 440px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease 0.25s, transform 0.5s ease 0.25s;
+}
+.ge-sub.ge-text-in  { opacity: 1; transform: translateY(0); }
+.ge-sub.ge-text-out { opacity: 0; transform: translateY(10px); transition: opacity 0.25s ease, transform 0.25s ease; }
+
+/* CTA Button */
+.ge-cta-wrap { overflow: hidden; height: 56px; }
+.ge-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.4s ease 0.35s, transform 0.4s ease 0.35s;
+}
+.ge-cta.ge-text-in  { opacity: 1; transform: translateY(0); }
+.ge-cta.ge-text-out { opacity: 0; transform: translateY(20px); transition: opacity 0.25s ease, transform 0.25s ease; }
+
+.ge-cta-circle {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--ge-accent);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.ge-cta-circle svg { width: 18px; height: 18px; fill: #fff; transition: transform 0.3s ease; }
+.ge-cta:hover .ge-cta-circle { background: var(--ge-accent-dark); transform: scale(1.1); }
+.ge-cta:hover .ge-cta-circle svg { transform: translateX(3px); }
+.ge-cta-label {
+  font-size: 0.82rem; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--ge-white);
+}
+
+/* ── Mode A: Vertical Cards Panel ── */
+.ge-cards-panel {
+  grid-column: 2; grid-row: 1;
+  display: flex; flex-direction: column;
+  gap: 14px; padding-top: 80px;
+  align-self: center;
+  width: 190px; overflow: visible;
+}
+
+.ge-card {
+  width: 190px; height: 130px;
+  border-radius: var(--ge-card-radius);
+  overflow: hidden; position: relative;
+  flex-shrink: 0; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ge-card:hover { transform: scale(1.04); box-shadow: 0 14px 48px rgba(0,0,0,0.45); }
+.ge-card-img { width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.4s ease; }
+.ge-card:hover .ge-card-img { transform: scale(1.08); }
+.ge-card-label {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 8px 12px;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+
+@keyframes ge-card-enter { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+.ge-card.entering { animation: ge-card-enter 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+
+/* ════════════════════════════════════════════
+   BOTTOM BAR (shared)
+════════════════════════════════════════════ */
+.ge-bottom-bar {
+  grid-column: 1 / -1; grid-row: 2;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 0 0 40px;
+}
+
+/* Mode B bottom bar overrides */
+.ge-bottom-bar--b {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 4;
+  padding: 0 5vw 32px;
+  align-items: flex-end;
+}
+
+/* Prev/Next arrow buttons */
+.ge-nav-btns { display: flex; align-items: center; gap: 12px; }
+
+.ge-nav-btn {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+}
+.ge-nav-btn:hover { border-color: var(--ge-accent); background: rgba(232,160,32,0.15); transform: scale(1.08); }
+.ge-nav-btn svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.25s ease; }
+.ge-nav-btn:hover svg { stroke: var(--ge-accent); }
+
+/* ════════════════════════════════════════════
+   HIDDEN LAYOUT TOGGLE BUTTON
+════════════════════════════════════════════ */
+.ge-layout-toggle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.03);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  opacity: 0.18;
+  transition:
+    opacity 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    transform 0.25s ease;
+  position: relative;
+  overflow: visible;
+}
+
+/* Subtle tooltip */
+.ge-layout-toggle::after {
+  content: 'Switch Layout';
+  position: absolute;
+  top: -32px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0,0,0,0.6);
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease 0.1s;
+}
+
+.ge-layout-toggle:hover,
+.ge-toggle-reveal {
+  opacity: 1;
+  border-color: var(--ge-accent);
+  border-style: solid;
+  background: rgba(232,160,32,0.12);
+  transform: scale(1.1);
+}
+
+.ge-layout-toggle:hover::after {
+  opacity: 1;
+}
+
+.ge-layout-toggle svg {
+  width: 14px; height: 14px;
+  color: rgba(255,255,255,0.7);
+  transition: color 0.25s ease;
+}
+
+.ge-layout-toggle:hover svg,
+.ge-toggle-active svg {
+  color: var(--ge-accent);
+}
+
+/* When toggle is active mode (Mode B showing Layout A icon) */
+.ge-toggle-active {
+  opacity: 0.22;
+  border-color: rgba(232,160,32,0.3);
+}
+.ge-toggle-active:hover {
+  opacity: 1;
+}
+
+/* Odometer */
+.ge-counter-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.ge-counter { display: flex; align-items: baseline; gap: 6px; }
+.ge-odometer { overflow: hidden; position: relative; }
+.ge-odometer-inner { display: flex; flex-direction: column; transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1); }
+.ge-odometer-digit { font-weight: 800; color: var(--ge-white); display: block; }
+.ge-total { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.4); align-self: flex-end; padding-bottom: 6px; }
+
+/* Progress segments */
+.ge-progress { display: flex; gap: 6px; align-items: center; }
+.ge-progress-seg {
+  height: 2.5px; width: 32px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px; position: relative; overflow: hidden;
+  transition: background 0.3s ease;
+}
+.ge-progress-seg::after {
+  content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+  width: 0%; background: var(--ge-accent); border-radius: 2px;
+  transition: width 0s;
+}
+.ge-progress-seg.active::after { width: 100%; transition: width 5s linear; }
+.ge-progress-seg.past::after   { width: 100%; background: rgba(255,255,255,0.55); transition: none; }
+
+/* ════════════════════════════════════════════
+   MODE B — LAYOUT (full-screen + filmstrip)
+════════════════════════════════════════════ */
+.ge-layout-b {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 5vw;
+}
+
+/* Top branding bar */
+.ge-b-topbar {
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.ge-b-brand {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 3.5px;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+}
+
+/* Mode B content block — centered-left */
+.ge-b-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 60px;
+  max-width: 700px;
+}
+
+/* ─── Filmstrip ─── */
+.ge-filmstrip {
+  display: flex;
+  gap: 12px;
+  padding: 0 0 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  z-index: 3;
+  position: relative;
+}
+.ge-filmstrip::-webkit-scrollbar { display: none; }
+
+@keyframes ge-film-enter {
+  from { opacity: 0; transform: translateY(40px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ge-film-card {
+  flex-shrink: 0;
+  width: 200px;
+  height: 140px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  animation: ge-film-enter 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.ge-film-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.55);
+}
+
+.ge-film-card--active {
+  border-color: var(--ge-accent);
+  box-shadow: 0 0 0 1px var(--ge-accent), 0 8px 32px rgba(232,160,32,0.25);
+  transform: translateY(-4px);
+}
+
+.ge-film-card-img {
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.4s ease;
+}
+.ge-film-card:hover .ge-film-card-img { transform: scale(1.08); }
+
+.ge-film-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px 12px;
+}
+
+.ge-film-card-loc {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ge-accent);
+  margin-bottom: 3px;
+  opacity: 0.9;
+}
+
+.ge-film-card-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* Mode B progress line */
+.ge-b-progress-line {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.ge-b-progress-line .ge-progress-seg {
+  flex: 1;
+  max-width: 120px;
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — Full System
+   • ≤ 1024px  Tablet Landscape
+   • ≤ 768px   Tablet Portrait
+   • ≤ 480px   Mobile
+   • ≤ 375px   Small Mobile
+════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────────
+   TABLET LANDSCAPE  (≤ 1024px)
+────────────────────────────────────────── */
+@media (max-width: 1024px) {
+
+  /* Mode A */
+  .ge-cards-panel {
+    width: 160px;
+    gap: 10px;
+  }
+  .ge-card {
+    width: 160px;
+    height: 108px;
+  }
+  .ge-title {
+    font-size: clamp(42px, 6vw, 80px);
+    letter-spacing: -1.5px;
+  }
+  .ge-sub {
+    font-size: 0.88rem;
+    max-width: 360px;
+  }
+  .ge-layout {
+    gap: 0 2vw;
+    padding: 0 4vw;
+  }
+
+  /* Mode B */
+  .ge-film-card {
+    width: 172px;
+    height: 122px;
+  }
+  .ge-b-content {
+    padding-top: 50px;
+  }
+}
+
+/* ──────────────────────────────────────────
+   TABLET PORTRAIT  (≤ 768px)
+────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Wrapper */
+  .ge-hero {
+    min-height: 580px;
+  }
+
+  /* ── Mode A ── */
+  .ge-cards-panel {
+    display: none;   /* hide vertical cards */
+  }
+  .ge-layout {
+    grid-template-columns: 1fr;
+    padding: 0 6vw;
+    gap: 0;
+  }
+  .ge-content {
+    padding-top: 88px;
+    max-width: 100%;
+  }
+  .ge-title {
+    font-size: clamp(40px, 9vw, 68px);
+    letter-spacing: -1px;
+    line-height: 1.05;
+  }
+  .ge-location {
+    font-size: 0.82rem;
+    letter-spacing: 2.5px;
+  }
+  .ge-sub {
+    font-size: 0.875rem;
+    max-width: 480px;
+    margin-bottom: 0;
+  }
+  .ge-sub-wrap {
+    margin-bottom: 24px;
+  }
+  .ge-cta-wrap {
+    height: 52px;
+  }
+  .ge-cta-circle {
+    width: 42px;
+    height: 42px;
+  }
+  .ge-bottom-bar {
+    padding: 0 0 28px;
+  }
+  .ge-nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .ge-odometer-digit {
+    font-size: 2.4rem;
+  }
+  .ge-odometer {
+    height: 44px;
+  }
+  .ge-progress-seg {
+    width: 26px;
+  }
+
+  /* ── Mode B ── */
+  .ge-layout-b {
+    padding: 0 4vw;
+  }
+  .ge-b-content {
+    padding-top: 88px;
+    max-width: 100%;
+  }
+  .ge-filmstrip {
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+  .ge-film-card {
+    width: 148px;
+    height: 106px;
+    border-radius: 12px;
+  }
+  .ge-film-card-title {
+    font-size: 0.7rem;
+  }
+  .ge-film-card-loc {
+    font-size: 0.55rem;
+    letter-spacing: 1.5px;
+  }
+  .ge-bottom-bar--b {
+    padding: 0 4vw 24px;
+  }
+  .ge-b-progress-line {
+    padding: 0 16px;
+  }
+  .ge-b-progress-line .ge-progress-seg {
+    max-width: 80px;
+  }
+  .ge-layout-toggle {
+    width: 32px;
+    height: 32px;
+  }
+  .ge-layout-toggle svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+/* ──────────────────────────────────────────
+   MOBILE  (≤ 480px)
+────────────────────────────────────────── */
+@media (max-width: 480px) {
+
+  /* Wrapper */
+  .ge-hero {
+    min-height: 520px;
+  }
+
+  /* ── Mode A ── */
+  .ge-layout {
+    padding: 0 5vw;
+  }
+  .ge-content {
+    padding-top: 78px;
+  }
+  .ge-title {
+    font-size: clamp(34px, 10.5vw, 56px);
+    letter-spacing: -0.5px;
+    line-height: 1.08;
+  }
+  .ge-location {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+  }
+  .ge-location-wrap {
+    height: 26px;
+    margin-bottom: 8px;
+  }
+  .ge-title-wrap {
+    margin-bottom: 14px;
+  }
+  .ge-sub {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    max-width: 100%;
+    /* Hide subtext on small screens to reduce clutter */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ge-sub-wrap {
+    margin-bottom: 18px;
+  }
+  .ge-cta-label {
+    font-size: 0.72rem;
+    letter-spacing: 1.8px;
+  }
+  .ge-cta-circle {
+    width: 38px;
+    height: 38px;
+  }
+  .ge-cta-circle svg {
+    width: 14px;
+    height: 14px;
+  }
+  .ge-cta-wrap {
+    height: 46px;
+  }
+  .ge-bottom-bar {
+    padding: 0 0 22px;
+  }
+  .ge-nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .ge-nav-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+  .ge-nav-btns {
+    gap: 8px;
+  }
+  .ge-odometer-digit {
+    font-size: 2rem;
+    line-height: 38px;
+  }
+  .ge-odometer {
+    height: 38px;
+  }
+  .ge-total {
+    font-size: 0.85rem;
+  }
+  .ge-progress-seg {
+    width: 22px;
+    height: 2px;
+  }
+  .ge-progress {
+    gap: 4px;
+  }
+  .ge-layout-toggle {
+    width: 28px;
+    height: 28px;
+  }
+  .ge-layout-toggle svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  /* ── Mode B ── */
+  .ge-layout-b {
+    padding: 0 3vw;
+  }
+  .ge-b-content {
+    padding-top: 76px;
+  }
+  .ge-filmstrip {
+    gap: 8px;
+  }
+  .ge-film-card {
+    width: 130px;
+    height: 94px;
+    border-radius: 10px;
+  }
+  .ge-film-card-overlay {
+    padding: 8px 10px;
+  }
+  .ge-film-card-title {
+    font-size: 0.64rem;
+    letter-spacing: 0.3px;
+  }
+  .ge-film-card-loc {
+    font-size: 0.5rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 2px;
+  }
+  .ge-bottom-bar--b {
+    padding: 0 3vw 18px;
+    align-items: center;
+  }
+  .ge-b-progress-line {
+    padding: 0 10px;
+  }
+  .ge-b-progress-line .ge-progress-seg {
+    max-width: 56px;
+    height: 2px;
+  }
+  /* Overlay stronger on mobile for readability */
+  .ge-overlay {
+    background: linear-gradient(
+      105deg,
+      rgba(0,0,0,0.82) 0%,
+      rgba(0,0,0,0.55) 50%,
+      rgba(0,0,0,0.25) 100%
+    );
+  }
+  .ge-overlay--b {
+    background:
+      linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.1) 50%),
+      linear-gradient(to right, rgba(0,0,0,0.75) 0%, transparent 70%);
+  }
+}
+
+/* ──────────────────────────────────────────
+   SMALL MOBILE  (≤ 375px)
+────────────────────────────────────────── */
+@media (max-width: 375px) {
+
+  .ge-hero {
+    min-height: 480px;
+  }
+  .ge-content {
+    padding-top: 72px;
+  }
+  .ge-title {
+    font-size: clamp(28px, 11vw, 48px);
+    letter-spacing: 0;
+    line-height: 1.1;
+  }
+  .ge-location {
+    font-size: 0.65rem;
+    letter-spacing: 1.8px;
+  }
+  .ge-sub {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
+  }
+  .ge-title-wrap {
+    margin-bottom: 10px;
+  }
+  .ge-sub-wrap {
+    margin-bottom: 14px;
+  }
+  .ge-cta-circle {
+    width: 34px;
+    height: 34px;
+  }
+  .ge-cta-label {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+  }
+  .ge-cta-wrap {
+    height: 40px;
+  }
+  .ge-nav-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .ge-odometer-digit {
+    font-size: 1.7rem;
+    line-height: 34px;
+  }
+  .ge-odometer {
+    height: 34px;
+  }
+  .ge-progress-seg {
+    width: 18px;
+  }
+  .ge-bottom-bar {
+    padding: 0 0 18px;
+  }
+
+  /* Mode B — very small */
+  .ge-film-card {
+    width: 112px;
+    height: 82px;
+    border-radius: 8px;
+  }
+  .ge-film-card-title {
+    font-size: 0.58rem;
+  }
+  .ge-film-card-loc {
+    display: none; /* hide location tag at xs */
+  }
+  .ge-b-progress-line {
+    display: none; /* simplify bottom bar on xs */
+  }
+  .ge-bottom-bar--b {
+    padding: 0 3vw 16px;
+    justify-content: space-between;
+  }
+
+  /* Toggle even smaller */
+  .ge-layout-toggle {
+    width: 26px;
+    height: 26px;
+  }
+}
+
